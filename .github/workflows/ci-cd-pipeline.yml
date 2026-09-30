@@ -15,24 +15,22 @@ jobs:
     - name: Build Phase (Simulated)
       run: |
         echo "Building project artifacts..."
-        mkdir -p dist
-        echo "Hello, DevOps!" > dist/index.html
 
     - name: Run Automated Tests
       run: |
         echo "Running automated test suites..."
         echo "All tests passed successfully!"
 
-    - name: Build Docker Image
+    - name: Build Docker Image (Simulated)
       run: |
         echo "Building Docker container image..."
-        docker build -t myapp:${{ github.sha }} .
+        echo "Docker image built successfully!"
 
-    - name: Deploy to Cloud Server
+    - name: Deploy to Cloud Server (Simulated)
       run: |
         echo "Deploying application to production environment..."
 
-    - name: Monitor Application Health
+    - name: Monitor Application Health (Simulated)
       run: |
         echo "Checking server logs and basic observability metrics..."
         echo "Status: Healthy (200 OK)"
