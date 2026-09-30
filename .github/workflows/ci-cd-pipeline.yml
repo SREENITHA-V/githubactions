@@ -1,0 +1,47 @@
+name: CI/CD Pipeline
+
+# 1. GitHub: Trigger pipeline automatically when code is pushed to the main branch
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Runs on a fresh virtual server provided by GitHub
+
+    steps:
+    # --- STEP 1: GITHUB (Checkout Code) ---
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+
+    # --- STEP 2: BUILD (Set up environment & compile) ---
+    - name: Set up Node.js Environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Dependencies & Build
+      run: |
+        npm install
+        npm run build
+
+    # --- STEP 3: TEST (Run automated unit tests) ---
+    - name: Run Automated Tests
+      run: npm test
+
+    # --- STEP 4: DOCKER (Package app into a container) ---
+    - name: Build Docker Image
+      run: |
+        docker build -t myapp:${{ github.sha }} .
+
+    # --- STEP 5: DEPLOY (Send container to production) ---
+    - name: Deploy to Cloud Server
+      run: |
+        echo "Deploying Docker container to production server..."
+        # (Here you would typically add steps to push the image to Docker Hub and restart your cloud server)
+
+    # --- STEP 6: MONITOR (Basic logs and observability) ---
+    - name: Monitor Application Health
+      run: |
+        echo "Checking server logs and basic observability metrics..."
+        # (Here you would check health check endpoints or trigger monitoring tools like Datadog/Prometheus)
